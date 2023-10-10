@@ -5,7 +5,7 @@
 // ---------------------+
 
 // imports:
-import java.util.Random;
+//import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.List;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class BarberShop
 {
     private static int elapsedTime = 0;
     private static final int NUM_BARBERS = 5; 
-    private static final int NUM_CHAIRS= NUM_BARBERS * 2;
+    static final int NUM_CHAIRS= NUM_BARBERS * 2;
     //private static final int NUM_CHAIRS= NUM_BARBERS * 2;
 
 
@@ -46,7 +46,7 @@ public class BarberShop
         } 
         else 
         {
-            System.out.println("Usage: <sleep time> <no. Barber>");
+            System.out.println("Usage: <sleep time: 0 > <no. Barber: 5>");
             System.out.println("Using default");
             System.out.printf("Sleep time = %d\t", sleepTime);
             System.out.printf("Number of Barber = %d\t", numBarber);
@@ -73,8 +73,6 @@ public class BarberShop
 		        // Create a thread
                 Thread c = new Thread(myCustomer);
 
-		        // Add the thread to a list IF you choose to do it that way
-                customerThreads.add(c);
 
 		        // Start up the threads that will run code in run()
                 c.start();
@@ -109,13 +107,14 @@ public class BarberShop
 class Customer implements Runnable 
 {
     private int id;
-    private static int numInwait, numInBarber;
-    private final Random generator = new Random();
+    private static int numInWait, numInBarber;
+    //private final Random generator = new Random();
+    private static final int NUM_CHAIRS = BarberShop.NUM_CHAIRS;
     
     // define semaphores and mutex variables
     private Semaphore swait, sbarber;
     private Semaphore mwait, mbarber; // mutex
-    private Thread thread; // Store the reference to the thread
+   // private Thread thread; // Store the reference to the thread
 
     Customer(int id, Semaphore swait, Semaphore sbarber, Semaphore mwait, Semaphore mbarber) 
     {
@@ -124,11 +123,13 @@ class Customer implements Runnable
         this.sbarber = sbarber;
         this.mwait = mwait;
         this.mbarber = mbarber;
+        numInBarber = 0;
+        numInWait = 0;
     }
 
     public void setThread(Thread thread) 
     {
-        this.thread = thread;
+        //this.thread = thread;
     }
 
 
@@ -137,18 +138,22 @@ class Customer implements Runnable
      */
     private void getWait() 
     {
-         //Use mutexes and semaphores here
-         if (isFull())
-         {
-            // leave!
-         }
-         else
-         {
-            this.numInWait++;
-         }
-         //Do not forget about using try and catch.
-	     //code ...
-    }
+        // Use semaphores and mutexes here
+        try {
+            // Acquire the semaphore
+            mwait.acquire();
+            swait.acquire();
+
+            // Increment the number of customers waiting
+            numInWait++;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            // Always release the semaphore in a finally block
+            swait.release();
+            mwait.release();
+        }
+    } 
 
 
     /**
@@ -158,12 +163,30 @@ class Customer implements Runnable
     private void getBarberChair() 
     {
         //Use mutexes and semaphores appropriately 
-	    //code ...
+	    try 
+        {
+            // aquire the semaphore and mutex
+            sbarber.acquire();  
+            mbarber.acquire();
+            mwait.acquire();
 
-        this.numInBarber++;
-        this.numInwait--;
+            numInBarber++;
+            numInWait--;
+            
+            System.out.printf("\t\tCustomer %d enters Barbers chair. We have %d performing haircut and %d waiting\n", this.id, numInBarber, numInWait);
+            
+        } catch (InterruptedException e) 
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            // release them
+            mbarber.release();
+            mwait.release(); //barberchair was acquired -> release mwait
+            swait.release(); // barberchair was acquired -> release swait
+        }
 
-        System.out.printf("\t\tCustomer %d enters Barbers chair. We have %d performing haircut and %d waiting\n", this.id, this.numInBarber, this.numInwait);
 
         //Do not forget to signal the appropriate mutexes and semaphores
 	    //code ...
@@ -176,10 +199,23 @@ class Customer implements Runnable
     private void exitShop() 
     {
         // Use mutexes and semaphores appropriately
-	    // code ...
-        this.numInBarber--;
-        //Do not forget to signal the appropriate mutexes and semaphores
-	    // code ...
+        try 
+        {
+            mbarber.acquire(); // Acquire the mutex
+
+            numInBarber--;
+            System.out.printf("\t\t\tCustomer %d leaves the shop\n", id);
+        } 
+        catch (InterruptedException e) 
+        {
+            e.printStackTrace();
+        } 
+        finally
+        {
+            // Release the mutex
+            mbarber.release();
+            sbarber.release();
+        }
     }
 
     @Override
@@ -206,30 +242,30 @@ class Customer implements Runnable
 
 	        // Sleep a random amount of time here
             sleeps();
-
-	        // code ...
             
 	        // Exit
             exitShop();
 
-            System.out.printf("\t\t\tCustomer %d exits the system\n", id);
+            //System.out.printf("\t\t\tCustomer %d leaves the shop\n", id);
 
-            } 
+        } 
         
     }
 
     public void sleeps()
     {
-            try()
-            {
-                double randSleepTime = Math.random();
-                long miliSleepTime = (long) (randSleepTime *1000);
-                Thread.sleep(miliSleepTime);
-            }
-            catch(InterruptedException e)
-            {
-                e.printStackTrace();
-            }
+        try {
+        double randSleepTime = Math.random();
+        long miliSleepTime = (long) (randSleepTime * 1000);
+        Thread.sleep(miliSleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isFull() 
+    {
+        return numInWait >= NUM_CHAIRS;
     }
 
 }
