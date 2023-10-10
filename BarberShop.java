@@ -138,21 +138,32 @@ class Customer implements Runnable
      */
     private void getWait() 
     {
-        // Use semaphores and mutexes here
-        try {
-            // Acquire the semaphore
-            mwait.acquire();
-            swait.acquire();
-
-            // Increment the number of customers waiting
-            numInWait++;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            // Always release the semaphore in a finally block
-            swait.release();
-            mwait.release();
+        if (isFull())
+        {
+            mwait.release(); // Release mutex 
+            System.out.printf("\t\tCustomer %d leaves in frustration! %d out of %d waiting chairs in use!", id, numInWait, NUM_CHAIRS);
         }
+        else
+        {
+            try 
+            {
+                // Acquire the semaphore
+                mwait.acquire();
+                swait.acquire();
+
+                // Increment the number of customers waiting
+            numInWait++;
+            } catch (InterruptedException e) 
+            {
+                e.printStackTrace();
+            } finally 
+            {
+                // Always release the semaphore in a finally block
+                swait.release();
+                mwait.release();
+            }
+        }
+    
     } 
 
 

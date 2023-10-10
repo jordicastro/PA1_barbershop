@@ -1,0 +1,64 @@
+jordi@jordis-air PA1_barbershop % javac BarberShop.java
+jordi@jordis-air PA1_barbershop % java BarberShop 20 5 
+Sleep time = 20 Number of Barber = 5
+Customer 8 enters the shop
+                Customer 8 enters Barbers chair. We have 1 performing haircut and 0 waiting
+Customer 14 enters the shop
+                Customer 14 enters Barbers chair. We have 2 performing haircut and 0 waiting
+Customer 6 enters the shop
+                Customer 6 enters Barbers chair. We have 3 performing haircut and 0 waiting
+Customer 1 enters the shop
+                Customer 1 enters Barbers chair. We have 4 performing haircut and 0 waiting
+                        Customer 1 leaves the shop
+                        Customer 1 leaves the shop
+Customer 0 enters the shop
+                Customer 0 enters Barbers chair. We have 4 performing haircut and 0 waiting
+Customer 7 enters the shop
+                Customer 7 enters Barbers chair. We have 5 performing haircut and 0 waiting
+                        Customer 14 leaves the shop
+                        Customer 14 leaves the shop
+Customer 4 enters the shop
+                Customer 4 enters Barbers chair. We have 5 performing haircut and 0 waiting
+Customer 12 enters the shop
+Customer 2 enters the shop
+Customer 5 enters the shop
+                        Customer 8 leaves the shop
+                        Customer 8 leaves the shop
+                Customer 12 enters Barbers chair. We have 5 performing haircut and 2 waiting
+                        Customer 7 leaves the shop
+                        Customer 7 leaves the shop
+                Customer 2 enters Barbers chair. We have 5 performing haircut and 1 waiting
+Customer 9 enters the shop
+Customer 10 enters the shop
+                        Customer 0 leaves the shop
+                        Customer 0 leaves the shop
+                Customer 5 enters Barbers chair. We have 5 performing haircut and 2 waiting
+                        Customer 4 leaves the shop
+                        Customer 4 leaves the shop
+                Customer 9 enters Barbers chair. We have 5 performing haircut and 1 waiting
+Customer 13 enters the shop
+                        Customer 5 leaves the shop
+                        Customer 5 leaves the shop
+                Customer 10 enters Barbers chair. We have 5 performing haircut and 1 waiting
+Customer 3 enters the shop
+                        Customer 2 leaves the shop
+                        Customer 2 leaves the shop
+                Customer 13 enters Barbers chair. We have 5 performing haircut and 1 waiting
+Customer 11 enters the shop
+                        Customer 6 leaves the shop
+                        Customer 6 leaves the shop
+                Customer 3 enters Barbers chair. We have 5 performing haircut and 1 waiting
+                        Customer 13 leaves the shop
+                        Customer 13 leaves the shop
+                        Customer 12 leaves the shop
+                        Customer 12 leaves the shop
+                Customer 11 enters Barbers chair. We have 4 performing haircut and 0 waiting
+                        Customer 3 leaves the shop
+                        Customer 3 leaves the shop
+                        Customer 9 leaves the shop
+                        Customer 9 leaves the shop
+                        Customer 10 leaves the shop
+                        Customer 10 leaves the shop
+                        Customer 11 leaves the shop
+                        Customer 11 leaves the shop
+All customers have been served. Closing the shop.
