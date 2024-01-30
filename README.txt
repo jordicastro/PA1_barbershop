@@ -2,7 +2,7 @@ TITLE: BarberShop Semaphores and Mutex Simulation
 
 AUTHOR: JORDI CASTRO 
 
-ID: 010974536
+ID: _________
 
 Description:
 Java program simulates the operation of a barber shop with a seating area (protected area) and barber seats (protected area) through the use of semaphores and mutexes
